@@ -1,0 +1,46 @@
+# ------------------------------------------------------------------------------------------ #
+# Lines starting with “#” are comments and will be ignored by the automation.
+# Indentation determines hierarchy within the script.
+# Visit g.co/home/script-editor-docs for full documentation.
+# ------------------------------------------------------------------------------------------ #
+
+
+# ------------------------------------------------------------------------------------------ #
+# Send a device push notification
+# Device: ShellyBLU Door/Window BLU
+# Will send a Push Notificaiton when door is Opened & another notification when door is closed
+# ------------------------------------------------------------------------------------------ #
+
+
+metadata:
+  name: Garage Door Sensor Notify # Choose a short name that summarizes important starters and actions, like “Sunset lights”.
+  description: Notify me when the garage door is open or closed # Write a detailed description that includes everything the automation does, like “At sunset, on weekdays, close blinds, turn on lights to 50%, and play the sunset playlist on certain speakers.”
+
+automations:
+  # “starters” and “actions” are required; “conditions” are optional.
+  # Use Ctrl + Space to see autocomplete suggestions.
+
+  # ---- STARTERS ---- #
+  # Starters describe events that will start the automation.
+  # To add more than one starter, duplicate the "- type" section under "starters".
+  # If you add multiple starter events, any one of them happening will start the automation.
+  - starters:
+      - type: device.state.OpenClose # For devices that support opening and closing, and in some cases opening and closing partially or potentially in more than one direction.
+        state: openPercent
+        # Indicates the percentage that a device is opened, where 0 is closed and 100 is fully open. [available operators: is, isNot, lessThan, lessThanOrEqualTo, greaterThan, greaterThanOrEqualTo]
+        is: 100
+        device: Garage Door Sensor - Garage
+    actions:
+      - type: home.command.Notification
+        title: "Garage Door - Opened"
+        body: "The Garage Door has been Opened"
+  - starters:
+      - type: device.state.OpenClose # For devices that support opening and closing, and in some cases opening and closing partially or potentially in more than one direction.
+        state: openPercent
+        # Indicates the percentage that a device is opened, where 0 is closed and 100 is fully open. [available operators: is, isNot, lessThan, lessThanOrEqualTo, greaterThan, greaterThanOrEqualTo]
+        is: 0
+        device: Garage Door Sensor - Garage
+    actions:
+      - type: home.command.Notification
+        title: "Garage Door - Closed"
+        body: "The Garage Door has been Closed"
