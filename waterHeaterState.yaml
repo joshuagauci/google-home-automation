@@ -1,0 +1,186 @@
+# ------------------------------------------------------------------------------------------ #
+# Lines starting with "#" are comments and will be ignored by the automation.
+# Indentation determines hierarchy within the script.
+# Visit g.co/home/script-editor-docs for full documentation.
+# ------------------------------------------------------------------------------------------ #
+metadata:
+  name: Solar Water Heater Monitor
+  description: Notify when solar water heater temperature is below 35°C or above 45°C, and send daily temperature range updates at 6 AM and 7 PM.
+automations:
+  # ---- TEMPERATURE TOO LOW ALERT ---- #
+  - starters:
+      - type: device.state.TemperatureSetting
+        state: thermostatTemperatureAmbient
+        lessThan: 35C
+        device: Solar Water Heater - Main Bathroom
+        suppressFor: 1hours
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Low Temperature"
+        body: "Warning: Solar water heater temperature is below 35°C"
+
+  # ---- TEMPERATURE TOO HIGH ALERT ---- #
+  - starters:
+      - type: device.state.TemperatureSetting
+        state: thermostatTemperatureAmbient
+        greaterThan: 45C
+        device: Solar Water Heater - Main Bathroom
+        suppressFor: 1hours
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - High Temperature"
+        body: "Warning: Solar water heater temperature is above 45°C"
+
+  # ======================================================================== #
+  # MORNING UPDATES (6 AM)
+  # ======================================================================== #
+
+  # ---- MORNING: Below 30°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 06:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      lessThan: 30C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Morning Update"
+        body: "Good morning! Water heater is below 30°C - water is cold."
+
+  # ---- MORNING: 30°C to 34°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 06:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      greaterThanOrEqualTo: 30C
+      lessThan: 35C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Morning Update"
+        body: "Good morning! Water heater is between 30-35°C - water is cool."
+
+  # ---- MORNING: 35°C to 39°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 06:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      greaterThanOrEqualTo: 35C
+      lessThan: 40C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Morning Update"
+        body: "Good morning! Water heater is between 35-40°C - water is warm."
+
+  # ---- MORNING: 40°C to 45°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 06:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      greaterThanOrEqualTo: 40C
+      lessThanOrEqualTo: 45C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Morning Update"
+        body: "Good morning! Water heater is between 40-45°C - water is hot and ready!"
+
+  # ---- MORNING: Above 45°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 06:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      greaterThan: 45C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Morning Update"
+        body: "Good morning! Water heater is above 45°C - water is very hot!"
+
+  # ======================================================================== #
+  # EVENING UPDATES (7 PM)
+  # ======================================================================== #
+
+  # ---- EVENING: Below 30°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 19:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      lessThan: 30C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Evening Update"
+        body: "Good evening! Water heater is below 30°C - water is cold."
+
+  # ---- EVENING: 30°C to 34°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 19:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      greaterThanOrEqualTo: 30C
+      lessThan: 35C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Evening Update"
+        body: "Good evening! Water heater is between 30-35°C - water is cool."
+
+  # ---- EVENING: 35°C to 39°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 19:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      greaterThanOrEqualTo: 35C
+      lessThan: 40C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Evening Update"
+        body: "Good evening! Water heater is between 35-40°C - water is warm."
+
+  # ---- EVENING: 40°C to 45°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 19:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      greaterThanOrEqualTo: 40C
+      lessThanOrEqualTo: 45C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Evening Update"
+        body: "Good evening! Water heater is between 40-45°C - water is hot and ready!"
+
+  # ---- EVENING: Above 45°C ---- #
+  - starters:
+      - type: time.schedule
+        at: 19:00
+    condition:
+      type: device.state.TemperatureSetting
+      state: thermostatTemperatureAmbient
+      device: Solar Water Heater - Main Bathroom
+      greaterThan: 45C
+    actions:
+      - type: home.command.Notification
+        title: "Water Heater - Evening Update"
+        body: "Good evening! Water heater is above 45°C - water is very hot!"
